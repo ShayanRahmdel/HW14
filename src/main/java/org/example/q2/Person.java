@@ -22,6 +22,7 @@ public class Person {
     @Column(nullable = false)
     private String lastName;
 
+    @Temporal(value = TemporalType.DATE)
     private Date dob;
 
 }
