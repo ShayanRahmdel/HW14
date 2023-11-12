@@ -1,4 +1,4 @@
-package org.example.q2;
+package org.example.q2.entity;
 
 import lombok.*;
 
@@ -11,6 +11,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
+@Table(name = "Person")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +26,14 @@ public class Person {
     @Temporal(value = TemporalType.DATE)
     private Date dob;
 
+    public Person(String firstName, String lastName, Date dob) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+    }
+
+    public Person(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }
