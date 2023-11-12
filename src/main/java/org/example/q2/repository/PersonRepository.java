@@ -5,10 +5,12 @@ import org.example.q2.entity.Person;
 import java.util.List;
 
 public interface PersonRepository {
-    void save();
-    void update();
+    void save(Person person);
+    Person loadById(Long id);
 
-    void delete();
+    void update(Person person,Long id);
+
+    void delete(Long id);
 
     List<Person> loadAll();
 
