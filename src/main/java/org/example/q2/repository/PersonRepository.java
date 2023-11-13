@@ -8,12 +8,12 @@ public interface PersonRepository {
     void save(Person person);
     Person loadById(Long id);
 
-    void update(Person person,Long id);
+    void update(Person person);
 
-    void delete(Long id);
+    void delete(Person person);
 
     List<Person> loadAll();
 
-    Boolean contains();
+    Boolean contains(String firstName);
 
 }

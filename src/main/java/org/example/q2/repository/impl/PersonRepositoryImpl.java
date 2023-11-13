@@ -32,43 +32,40 @@ public class PersonRepositoryImpl implements PersonRepository {
 
     @Override
     public Person loadById(Long id) {
-        String hql = "FROM Person f WHERE f.id=:id";
-        Query<Person> query = session.createQuery(hql, Person.class);
-        query.setParameter("id",id);
-        Person singleResult = query.getSingleResult();
-        session.close();
-        return singleResult;
+        try {
+            session.beginTransaction();
+            return session.load(Person.class,id);
+        }catch (Exception e){
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
 
+        return null;
     }
 
     @Override
-    public void update(Person person, Long id) {
-        String hql = "update Person f set f.firstName=:firstName ,f.lastName=:lastName where f.id=:id";
+    public void update(Person person) {
+
         try {
             session.beginTransaction();
-            Query query = session.createQuery(hql);
-            query.setParameter("firstName", person.getFirstName());
-            query.setParameter("lastName",person.getLastName());
-            query.setParameter("id", id);
-            query.executeUpdate();
+            session.update(person);
             session.getTransaction().commit();
-            session.close();
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
+
+
     }
 
     @Override
-    public void delete(Long id) {
-        String hql="delete from Person where id=:id";
+    public void delete(Person person) {
+
         try {
             session.beginTransaction();
-            Query query = session.createQuery(hql);
-            query.setParameter("id",id);
-            query.executeUpdate();
+            Person person1 = session.get(Person.class, person.getId());
+            session.delete(person1);
             session.getTransaction().commit();
-            session.close();
         }catch (Exception e){
             e.printStackTrace();
             session.getTransaction().rollback();
@@ -85,7 +82,11 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     @Override
-    public Boolean contains() {
-        return null;
+    public Boolean contains(String firstName) {
+        String hql = "select count(*) from Person p where p.firstName = :firstName";
+        Query<Long> query = session.createQuery(hql, Long.class);
+        query.setParameter("firstName",firstName);
+        Long aLong = query.uniqueResult();
+        return aLong !=null && aLong>0;
     }
 }
