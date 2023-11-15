@@ -21,12 +21,11 @@ public class PersonRepositoryImpl implements PersonRepository {
             session.beginTransaction();
             session.persist(person);
             session.getTransaction().commit();
-            session.close();
+
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-
 
     }
 
@@ -34,8 +33,9 @@ public class PersonRepositoryImpl implements PersonRepository {
     public Person loadById(Long id) {
         try {
             session.beginTransaction();
-            return session.load(Person.class,id);
-        }catch (Exception e){
+            return session.load(Person.class, id);
+
+        } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
@@ -44,18 +44,23 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     @Override
-    public void update(Person person) {
+    public void update(Long id, Person person) {
+
 
         try {
             session.beginTransaction();
-            session.update(person);
+            Person person1 =  session.load(Person.class, id);
+            person1.setFirstName(person.getFirstName());
+            person1.setLastName(person.getLastName());
+
+            session.update(person1);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
+
+
         }
-
-
     }
 
     @Override
@@ -63,10 +68,11 @@ public class PersonRepositoryImpl implements PersonRepository {
 
         try {
             session.beginTransaction();
+
             Person person1 = session.get(Person.class, person.getId());
             session.delete(person1);
             session.getTransaction().commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
@@ -85,8 +91,8 @@ public class PersonRepositoryImpl implements PersonRepository {
     public Boolean contains(String firstName) {
         String hql = "select count(*) from Person p where p.firstName = :firstName";
         Query<Long> query = session.createQuery(hql, Long.class);
-        query.setParameter("firstName",firstName);
+        query.setParameter("firstName", firstName);
         Long aLong = query.uniqueResult();
-        return aLong !=null && aLong>0;
+        return aLong != null && aLong > 0;
     }
 }

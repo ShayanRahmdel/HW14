@@ -8,7 +8,7 @@ public interface PersonRepository {
     void save(Person person);
     Person loadById(Long id);
 
-    void update(Person person);
+    void update(Long id,Person person);
 
     void delete(Person person);
 
