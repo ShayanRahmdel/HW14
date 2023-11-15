@@ -45,18 +45,25 @@ public class StudentRepositoryImpl implements StudentRepository {
     }
 
     @Override
-    public void update(Student student) {
+    public void update(Long id,Student student) {
 
         try {
             session.beginTransaction();
-            session.update(student);
+            Student oldStudent = session.load(Student.class, id);
+            oldStudent.setFirstName(student.getFirstName());
+            oldStudent.setLastName(student.getLastName());
+            oldStudent.setStudentNumber(student.getStudentNumber());
+            oldStudent.setField(student.getField());
+            oldStudent.setActive(student.isActive());
+            oldStudent.setAge(student.getAge());
+
+            session.update(oldStudent);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
+           // String studentNumber, String field, boolean isActive, int age
         }
-
-
     }
 
     @Override
@@ -83,10 +90,11 @@ public class StudentRepositoryImpl implements StudentRepository {
     }
 
     @Override
-    public Boolean contains(String firstName) {
-        String hql = "select count(*) from Student p where p.firstName = :firstName";
+    public Boolean contains(String firstName,String lastName) {
+        String hql = "select count(*) from Student p where p.firstName = :firstName and p.lastName =:lastName";
         Query<Long> query = session.createQuery(hql, Long.class);
         query.setParameter("firstName",firstName);
+        query.setParameter("lastName",lastName);
         Long aLong = query.uniqueResult();
         return aLong !=null && aLong>0;
     }

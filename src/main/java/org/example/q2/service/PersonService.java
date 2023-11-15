@@ -18,7 +18,7 @@ public interface PersonService {
 
     List<Person> loadAll();
 
-    Boolean contains(String firstName);
+    Boolean contains(String firstName,String lastName);
 
     void signUp(String firstName, String lastName, Date dob);
 

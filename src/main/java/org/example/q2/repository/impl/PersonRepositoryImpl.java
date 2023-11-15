@@ -88,10 +88,11 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     @Override
-    public Boolean contains(String firstName) {
-        String hql = "select count(*) from Person p where p.firstName = :firstName";
+    public Boolean contains(String firstName,String lastName) {
+        String hql = "select count(*) from Person p where p.firstName = :firstName and p.lastName = :lastName";
         Query<Long> query = session.createQuery(hql, Long.class);
         query.setParameter("firstName", firstName);
+        query.setParameter("lastName",lastName);
         Long aLong = query.uniqueResult();
         return aLong != null && aLong > 0;
     }

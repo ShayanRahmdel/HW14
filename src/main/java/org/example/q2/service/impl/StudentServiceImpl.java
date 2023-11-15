@@ -44,8 +44,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void update(Student student) {
-        studentRepository.update(student);
+    public void update(Long id,Student student) {
+        studentRepository.update(id,student);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Boolean contains(String firstName) {
-        return studentRepository.contains(firstName);
+    public Boolean contains(String firstName,String lastName) {
+        return studentRepository.contains(firstName,lastName);
     }
 
     @Override
@@ -100,6 +100,7 @@ public class StudentServiceImpl implements StudentService {
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
         if (violations.isEmpty()) {
             studentRepository.save(student);
+            System.out.println(student);
         } else {
             for (ConstraintViolation<Student> violation : violations) {
                 System.out.println(violation.getPropertyPath() + ": " + violation.getMessage());

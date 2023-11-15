@@ -53,8 +53,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Boolean contains(String firstName) {
-        return personRepository.contains(firstName);
+    public Boolean contains(String firstName,String lastName) {
+        return personRepository.contains(firstName,lastName);
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
-public class TeacherRepositoryImpl  implements TeacherRepository {
+public class TeacherRepositoryImpl implements TeacherRepository {
     Session session;
 
     public TeacherRepositoryImpl(Session session) {
@@ -34,9 +34,9 @@ public class TeacherRepositoryImpl  implements TeacherRepository {
     public Teacher loadById(Long id) {
         try {
             session.beginTransaction();
-            return session.load(Teacher.class,id);
+            return session.load(Teacher.class, id);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
@@ -45,18 +45,28 @@ public class TeacherRepositoryImpl  implements TeacherRepository {
     }
 
     @Override
-    public void update(Teacher teacher) {
+    public void update(Long id, Teacher teacher) {
 
         try {
             session.beginTransaction();
-            session.update(teacher);
+            Teacher oldTeacher = session.load(Teacher.class, id);
+            oldTeacher.setFirstName(teacher.getFirstName());
+            oldTeacher.setLastName(teacher.getLastName());
+            oldTeacher.setTeacherNumber(teacher.getTeacherNumber());
+            oldTeacher.setDegree(teacher.getDegree());
+            oldTeacher.setEmail(teacher.getEmail());
+            oldTeacher.setEducationalQualification(teacher.getEducationalQualification());
+            oldTeacher.setSalary(teacher.getSalary());
+
+            //String teacherNumber, Rank degree, String email, String educationalQualification, Double salary
+
+            session.update(oldTeacher);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
+
         }
-
-
     }
 
     @Override
@@ -67,7 +77,7 @@ public class TeacherRepositoryImpl  implements TeacherRepository {
             Person person1 = session.get(Teacher.class, teacher.getId());
             session.delete(person1);
             session.getTransaction().commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
@@ -83,11 +93,12 @@ public class TeacherRepositoryImpl  implements TeacherRepository {
     }
 
     @Override
-    public Boolean contains(String firstName) {
-        String hql = "select count(*) from Teacher p where p.firstName = :firstName";
+    public Boolean contains(String firstName,String lastName) {
+        String hql = "select count(*) from Teacher p where p.firstName = :firstName and  p.lastName = :lastName";
         Query<Long> query = session.createQuery(hql, Long.class);
-        query.setParameter("firstName",firstName);
+        query.setParameter("firstName", firstName);
+        query.setParameter("lastName",lastName);
         Long aLong = query.uniqueResult();
-        return aLong !=null && aLong>0;
+        return aLong != null && aLong > 0;
     }
 }

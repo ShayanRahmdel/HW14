@@ -14,6 +14,6 @@ public interface PersonRepository {
 
     List<Person> loadAll();
 
-    Boolean contains(String firstName);
+    Boolean contains(String firstName,String lastName);
 
 }

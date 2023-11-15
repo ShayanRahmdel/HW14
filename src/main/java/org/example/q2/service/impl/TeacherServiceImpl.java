@@ -1,18 +1,16 @@
 package org.example.q2.service.impl;
 
 import org.example.q2.entity.Rank;
-import org.example.q2.entity.Student;
 import org.example.q2.entity.Teacher;
-import org.example.q2.repository.StudentRepository;
 import org.example.q2.repository.TeacherRepository;
 import org.example.q2.service.TeacherService;
-import org.example.q2.util.AppContext;
 import org.hibernate.ObjectNotFoundException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -41,8 +39,8 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public void update(Teacher teacher) {
-        teacherRepository.update(teacher);
+    public void update(Long id,Teacher teacher) {
+        teacherRepository.update(id,teacher);
     }
 
     @Override
@@ -61,21 +59,21 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Boolean contains(String firstName) {
-        return teacherRepository.contains(firstName);
+    public Boolean contains(String firstName,String lastName) {
+        return teacherRepository.contains(firstName,lastName);
     }
 
     @Override
     public void signUp() {
         Teacher teacher = new Teacher();
         System.out.print("Enter FirstName:");
-        teacher.setFirstName(input.next());
+        teacher.setFirstName(giveStringInput());
         System.out.print("Enter LastName:");
-        teacher.setLastName(input.next());
+        teacher.setLastName(giveStringInput());
         System.out.print("enter teacherNUmber:");
-        teacher.setTeacherNumber(input.next());
+        teacher.setTeacherNumber(giveStringInput());
         System.out.print("LECTURER, ASSISTANT_PROFESSOR, ASSOCIATE_PROFESSOR, PROFESSOR:");
-        String rank1 = input.next();
+        String rank1 = giveStringInput();
         Rank rank;
         try {
             rank = Rank.valueOf(rank1);
@@ -85,11 +83,11 @@ public class TeacherServiceImpl implements TeacherService {
         }
         teacher.setDegree(rank);
         System.out.print("enter email:");
-        teacher.setEmail(input.next());
+        teacher.setEmail(giveStringInput());
         System.out.print("enter educationalQualification:");
-        teacher.setEducationalQualification(input.next());
+        teacher.setEducationalQualification(giveStringInput());
         System.out.print("enter salary:");
-        teacher.setSalary(input.nextDouble());
+        teacher.setSalary(giveIntegerInput());
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         // Create a Validator
         Validator validator = validatorFactory.getValidator();
@@ -98,9 +96,36 @@ public class TeacherServiceImpl implements TeacherService {
         Set<ConstraintViolation<Teacher>> violations = validator.validate(teacher);
         if (violations.isEmpty()) {
             teacherRepository.save(teacher);
+            System.out.println(teacher);
         } else {
             for (ConstraintViolation<Teacher> violation : violations) {
                 System.out.println(violation.getPropertyPath() + ": " + violation.getMessage());
+            }
+        }
+    }
+    private String giveStringInput() {
+        String i;
+        while (true) {
+            try {
+                i = input.next();
+
+                return i;
+            } catch (InputMismatchException e) {
+                input.nextLine();
+                System.out.println("Enter just String Please");
+            }
+        }
+    }
+    private Double giveIntegerInput() {
+        double i;
+        while (true) {
+            try {
+                i = input.nextDouble();
+                input.nextLine();
+                return i;
+            } catch (InputMismatchException e) {
+                input.nextLine();
+                System.out.println("Enter just number Please");
             }
         }
     }

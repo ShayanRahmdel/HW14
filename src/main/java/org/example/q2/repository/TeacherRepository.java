@@ -9,11 +9,11 @@ public interface TeacherRepository {
     void save(Teacher person);
     Teacher loadById(Long id);
 
-    void update(Teacher teacher);
+    void update(Long id,Teacher teacher);
 
     void delete(Teacher teacher);
 
     List<Teacher> loadAll();
 
-    Boolean contains(String firstName);
+    Boolean contains(String firstName,String lastName);
 }

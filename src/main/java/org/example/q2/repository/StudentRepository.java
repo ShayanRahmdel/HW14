@@ -9,11 +9,11 @@ public interface StudentRepository {
     void save(Student student);
     Student loadById(Long id);
 
-    void update(Student student);
+    void update(Long id,Student student);
 
     void delete(Student student);
 
     List<Student> loadAll();
 
-    Boolean contains(String firstName);
+    Boolean contains(String firstName,String lastName);
 }
