@@ -11,6 +11,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Person {
     public Person(Long id, String firstName, String lastName) {
         this.id = id;
