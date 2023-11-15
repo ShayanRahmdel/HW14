@@ -5,14 +5,17 @@ import org.example.q2.repository.PersonRepository;
 import org.example.q2.service.PersonService;
 import org.hibernate.ObjectNotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
 public class PersonServiceImpl implements PersonService {
 
     PersonRepository personRepository;
-    public PersonServiceImpl(PersonRepository personRepository){
-        this.personRepository=personRepository;
+
+    public PersonServiceImpl(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
+
     @Override
     public void save(Person person) {
         personRepository.save(person);
@@ -30,8 +33,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void update(Person person) {
-        personRepository.update(person);
+    public void update(Long id, Person person) {
+        personRepository.update(id, person);
     }
 
     @Override
@@ -55,9 +58,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void signUp(String firstName, String lastName) {
-        Person person = new Person(firstName,lastName);
+    public void signUp(String firstName, String lastName, Date dob) {
+        Person person = new Person(firstName, lastName,dob);
         personRepository.save(person);
-        System.out.println(personRepository.loadById(person.getId()));
+         System.out.println(person);
     }
 }
