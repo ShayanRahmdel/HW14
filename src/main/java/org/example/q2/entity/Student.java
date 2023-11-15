@@ -12,7 +12,6 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Getter
 @Setter
 public class Student extends Person{
@@ -46,5 +45,19 @@ public class Student extends Person{
         this.field = field;
         this.isActive = isActive;
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return  "\n"+
+                "============="+
+                "Student " +
+                "\n firstName = "+ getFirstName()+
+                "\n lastName = "+ getLastName() +
+                "\n studentNumber = '" + studentNumber + '\'' +
+                ",\n field = '" + field + '\'' +
+                ",\n enterDate = " + enterDate +
+                ",\n isActive = " + isActive +
+                ",\n age=" + age;
     }
 }

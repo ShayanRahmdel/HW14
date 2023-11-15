@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+
 public class Teacher extends Person {
     @Column(unique = true,length = 4)
     private String teacherNumber;
@@ -23,7 +23,7 @@ public class Teacher extends Person {
     private String email;
     @Column(length = 30)
     private String educationalQualification;
-    @Min(value = 10000000,message = "Salary should not be less than 10000000")
+    @Min(value = 100,message = "Salary should not be less than 100")
     private Double salary;
 
 
@@ -36,5 +36,19 @@ public class Teacher extends Person {
         this.email = email;
         this.educationalQualification = educationalQualification;
         this.salary = salary;
+    }
+
+    @Override
+    public String toString() {
+        return      "\n"+
+                "============"+
+                "Teacher " +
+                "\n firstName = " + getFirstName() +
+                "\n lastName = " + getLastName() +
+                "\n teacherNumber = '" + teacherNumber + '\'' +
+                ",\n degree = " + degree +
+                ",\n email = '" + email + '\'' +
+                ",\n educationalQualification = '" + educationalQualification + '\'' +
+                ",\n salary = " + salary;
     }
 }

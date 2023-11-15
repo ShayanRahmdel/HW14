@@ -10,7 +10,6 @@ import java.util.Date;
 @AllArgsConstructor
 @Setter
 @Getter
-@ToString
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Person {
     public Person(Long id, String firstName, String lastName) {
@@ -41,5 +40,16 @@ public class Person {
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return  "\n"+
+                "=========="+
+                "Your Person " +
+                "\n id= " + id +
+                ",\n firstName= '" + firstName + '\'' +
+                ",\n lastName= '" + lastName + '\'' +
+                ",\n dob= " + dob ;
     }
 }
